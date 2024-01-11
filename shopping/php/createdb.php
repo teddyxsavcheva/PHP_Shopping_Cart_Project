@@ -41,7 +41,7 @@ class CreateDB {
             //Query, used to create a new table
             $sql = "CREATE TABLE IF NOT EXISTS $tablename
                     (id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    product_name VARCHAR(25) NOT NULL,
+                    product_name VARCHAR(40) NOT NULL,
                     product_price FLOAT,
                     product_image VARCHAR(100)
                     );";
@@ -56,6 +56,23 @@ class CreateDB {
             return false;
         }
     }
+
+    // Function to get product from the database
+    public function displayTable() {
+        $sql = "SELECT * FROM $this->tablename";
+
+        $result = mysqli_query($this->connection, $sql);
+
+        if(mysqli_num_rows($result) > 0) {
+            return $result;
+        }
+    }
 }
 
+
+// INSERT INTO shoppingcart_table (product_name, product_price, product_image) VALUES 
+// ('Narciso Rodriguez All of me', 120, './upload/perfume1.1.jpg'),
+// ('Dolce & Gabbana Italian Love', 160, './upload/perfume3.jpg'),
+// ('Creed Wild Flowers', 140, './upload/perfume4.jpg'),
+// ('Burberry Goddess', 180, './upload/perfume2.jpg')
 ?>

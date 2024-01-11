@@ -32,10 +32,10 @@
         <div class="row text-center py-5">
             <!-- Perfume 1,2,3,4 -->
             <?php
-                perfume("Perfume 1", 160, "./upload/perfume1.jpg");
-                perfume("Dolce & Gabbana Italian Love", 120, "./upload/perfume3.jpg");
-                perfume("Creed Wild Flowers", 140, "./upload/perfume4.jpg");
-                perfume("Burberry Goddess", 180, "./upload/perfume2.jpg");
+                $result = $database->displayTable();
+                while ($row = mysqli_fetch_assoc($result)) {
+                    perfume($row['product_name'], $row['product_price'], $row['product_image']);
+                }
             ?>
 
 
