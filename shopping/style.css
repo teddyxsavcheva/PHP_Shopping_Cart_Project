@@ -1,0 +1,11 @@
+img {
+    max-width: 100%;
+    height: auto;
+    background: bisque radial-gradient(white 30%, bisque 70%);
+}
+
+.fa-star,
+.fa-star-half {
+    color: yellowgreen;
+    padding: 3% 0;
+}
