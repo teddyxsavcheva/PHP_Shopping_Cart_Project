@@ -33,9 +33,9 @@
             <!-- Perfume 1,2,3,4 -->
             <?php
                 perfume("Perfume 1", 160, "./upload/perfume1.jpg");
-                perfume("Perfume 2", 120, "./upload/perfume3.jpg");
-                perfume("Perfume 3", 140, "./upload/perfume4.jpg");
-                perfume("Perfume 4", 180, "./upload/perfume2.jpg");
+                perfume("Dolce & Gabbana Italian Love", 120, "./upload/perfume3.jpg");
+                perfume("Creed Wild Flowers", 140, "./upload/perfume4.jpg");
+                perfume("Burberry Goddess", 180, "./upload/perfume2.jpg");
             ?>
 
 
