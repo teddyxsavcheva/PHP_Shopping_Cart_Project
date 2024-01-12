@@ -1,9 +1,50 @@
 <?php
+
+// Starting session in which the cart products will be stored 
+session_start();
+
 require_once('./php/createdb.php');
-require_once('./php/component.php');
+require_once('./php/perfume.php');
 
 // Creating instance of CreateDB class
 $database = new CreateDB("ShoppingCart_DB", "shoppingcart_table");
+
+// If the button named "Add" is clicked, I want to execute this
+if (isset($_POST['add'])) {
+
+    // Check if the cart session variable is set (exists). If it exists, then there are already products in the cart
+    if (isset($_SESSION['cart'])) {
+
+        //array_column() returns the values from a single product_id column in the input array
+        $product_array_id = array_column($_SESSION['cart'], "product_id");
+
+        // If the product is already in the cart, then don't add it again -> POST used to get the product_id from the form in this session
+        if (in_array($_POST['product_id'], $product_array_id)) {
+            echo "<script>alert('Product is already added in the cart..!')</script>";
+            echo "<script>window.location = 'index.php'</script>";
+        }
+        // If the product is not in the cart, then add it
+        else {
+            $perfumesInCart = count($_SESSION['cart']);
+            $perfume_array = array(
+                'product_id' => $_POST['product_id']
+            );
+
+            // Create new session variable with the new count of objects in the cart
+            $_SESSION['cart'][$perfumesInCart] = $perfume_array;
+            //print_r($_SESSION['cart']);
+        }
+    } else {
+
+        $perfume_array = array(
+            'product_id' => $_POST['product_id']
+        );
+
+        // Create new session variable
+        $_SESSION['cart'][0] = $perfume_array;
+        //print_r($_SESSION['cart']);
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +53,7 @@ $database = new CreateDB("ShoppingCart_DB", "shoppingcart_table");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart</title>
+    <title>LovelyScent</title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -24,7 +65,8 @@ $database = new CreateDB("ShoppingCart_DB", "shoppingcart_table");
     <link rel="stylesheet" href="./style.css">
 
     <!-- SVG code for the shopping cart icon -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='12' width='14' viewBox='0 0 576 512'%3E%3Cpath d='M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z' fill='%23FFFFFF'/%3E%3C/svg%3E" type="image/svg+xml">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='16' width='16' viewBox='0 0 512 512'%3E%3Cpath fill='%23FFFFFF' d='M96 32v96H224V32c0-17.7-14.3-32-32-32H128C110.3 0 96 14.3 96 32zm0 128c-53 0-96 43-96 96V464c0 26.5 21.5 48 48 48H272c26.5 0 48-21.5 48-48V256c0-53-43-96-96-96H96zm64 96a80 80 0 1 1 0 160 80 80 0 1 1 0-160zM384 48c0-1.4-1-3-2.2-3.6L352 32 339.6 2.2C339 1 337.4 0 336 0s-3 1-3.6 2.2L320 32 290.2 44.4C289 45 288 46.6 288 48c0 1.4 1 3 2.2 3.6L320 64l12.4 29.8C333 95 334.6 96 336 96s3-1 3.6-2.2L352 64l29.8-12.4C383 51 384 49.4 384 48zm76.4 45.8C461 95 462.6 96 464 96s3-1 3.6-2.2L480 64l29.8-12.4C511 51 512 49.4 512 48c0-1.4-1-3-2.2-3.6L480 32 467.6 2.2C467 1 465.4 0 464 0s-3 1-3.6 2.2L448 32 418.2 44.4C417 45 416 46.6 416 48c0 1.4 1 3 2.2 3.6L448 64l12.4 29.8zm7.2 100.4c-.6-1.2-2.2-2.2-3.6-2.2s-3 1-3.6 2.2L448 224l-29.8 12.4c-1.2 .6-2.2 2.2-2.2 3.6c0 1.4 1 3 2.2 3.6L448 256l12.4 29.8c.6 1.2 2.2 2.2 3.6 2.2s3-1 3.6-2.2L480 256l29.8-12.4c1.2-.6 2.2-2.2 2.2-3.6c0-1.4-1-3-2.2-3.6L480 224l-12.4-29.8zM448 144c0-1.4-1-3-2.2-3.6L416 128 403.6 98.2C403 97 401.4 96 400 96s-3 1-3.6 2.2L384 128l-29.8 12.4c-1.2 .6-2.2 2.2-2.2 3.6c0 1.4 1 3 2.2 3.6L384 160l12.4 29.8c.6 1.2 2.2 2.2 3.6 2.2s3-1 3.6-2.2L416 160l29.8-12.4c1.2-.6 2.2-2.2 2.2-3.6z'/%3E%3C/svg%3E" type="image/svg+xml">
+
 </head>
 
 <body>
@@ -33,13 +75,14 @@ $database = new CreateDB("ShoppingCart_DB", "shoppingcart_table");
 
     <body>
 
+        <?php require_once('./php/header.php'); ?>
         <div class="container">
             <div class="row text-center py-5">
-                <!-- Perfume 1,2,3,4 -->
+                <!-- Creating perfume 1,2,3,4 by using data from the database-->
                 <?php
                 $result = $database->displayTable();
                 while ($row = mysqli_fetch_assoc($result)) {
-                    perfume($row['product_name'], $row['product_price'], $row['product_image']);
+                    perfume($row['product_name'], $row['product_price'], $row['product_image'], $row['id']);
                 }
                 ?>
 

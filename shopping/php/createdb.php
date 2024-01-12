@@ -72,7 +72,7 @@ class CreateDB {
 
 // INSERT INTO shoppingcart_table (product_name, product_price, product_image) VALUES 
 // ('Narciso Rodriguez All of me', 120, './upload/perfume1.1.jpg'),
-// ('Dolce & Gabbana Italian Love', 160, './upload/perfume3.jpg'),
+// ('Dolce & Gabbana Italian Love', 160, './upload/perfume2.jpg'),
 // ('Creed Wild Flowers', 140, './upload/perfume4.jpg'),
-// ('Burberry Goddess', 180, './upload/perfume2.jpg')
+// ('Burberry Goddess', 180, './upload/perfume3.jpg')
 ?>
