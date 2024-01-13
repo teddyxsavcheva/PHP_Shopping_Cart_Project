@@ -1,29 +1,27 @@
 <?php
-
-// Starting session in which the cart products will be stored 
 session_start();
 
 require_once('./php/createdb.php');
 require_once('./php/perfume.php');
 
-// Creating instance of CreateDB class
 $database = new CreateDB("ShoppingCart_DB", "shoppingcart_table");
 
-// If the button named "Add" is clicked, I want to execute this
+// If the button named "Add to Cart" is clicked, I want to execute this
 if (isset($_POST['add'])) {
 
-    // Check if the cart session variable is set (exists). If it exists, then there are already products in the cart
+    // Check if the cart session variable exist. If it exists, then there are already products in the cart
     if (isset($_SESSION['cart'])) {
 
         //array_column() returns the values from a single product_id column in the input array
         $product_array_id = array_column($_SESSION['cart'], "product_id");
 
-        // If the product is already in the cart, then don't add it again -> POST used to get the product_id from the form in this session
+        // If the product is already in the cart, then don't add it again 
         if (in_array($_POST['product_id'], $product_array_id)) {
             echo "<script>alert('Product is already added in the cart..!')</script>";
             echo "<script>window.location = 'index.php'</script>";
         }
-        // If the product is not in the cart, then add it
+
+        // If the product is not in the cart, then add it 
         else {
             $perfumesInCart = count($_SESSION['cart']);
             $perfume_array = array(
@@ -32,7 +30,6 @@ if (isset($_POST['add'])) {
 
             // Create new session variable with the new count of objects in the cart
             $_SESSION['cart'][$perfumesInCart] = $perfume_array;
-            //print_r($_SESSION['cart']);
         }
     } else {
 
@@ -42,7 +39,6 @@ if (isset($_POST['add'])) {
 
         // Create new session variable
         $_SESSION['cart'][0] = $perfume_array;
-        //print_r($_SESSION['cart']);
     }
 }
 ?>
